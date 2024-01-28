@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VueJS Sortable and Filterable File List</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.min.js"></script>
+</head>
+<body class="bg-gray-100 p-8">
+  {% raw %}
+    <div id="app" class="container mx-auto">
+        <h1 class="text-2xl font-bold mb-4">File List</h1>
+        <input type="text" v-model="filter" placeholder="Filter files..." class="mb-4 p-2 border-2 border-gray-300 rounded-md">
+
+        <div class="bg-white shadow overflow-hidden sm:rounded-md">
+            <table class="min-w-full divide-y divide-gray-200">
+                <thead class="bg-gray-50">
+                    <tr>
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider" @click="sortTable('name')">Name</th>
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider" @click="sortTable('filesize')">Filesize</th>
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider" @click="sortTable('resolution')">Resolution</th>
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider" @click="sortTable('created')">Created</th>
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                    </tr>
+                </thead>
+                <tbody class="bg-white divide-y divide-gray-200">
+                    <tr v-for="file in filteredFiles" :key="file.name">
+                        <td class="px-6 py-4 whitespace-nowrap">{{ file.name }}</td>
+                        <td class="px-6 py-4 whitespace-nowrap">{{ file.filesize }}</td>
+                        <td class="px-6 py-4 whitespace-nowrap">{{ file.resolution }}</td>
+                        <td class="px-6 py-4 whitespace-nowrap">{{ file.created }}</td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <button class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded" @click="deleteFile(file.name)">Delete</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        new Vue({
+            el: '#app',
+            data: {
+                files: [
+                    // Sample file data, replace with your actual file data
+                    { name: 'Document.pdf', filesize: '2MB', resolution: 'N/A', created: '2024-01-01'},
+                    // Add more file objects here
+                ],
+                filter: '',
+                currentSort: 'name',
+                currentSortDir: 'asc'
+            },
+            methods: {
+                sortTable: function(s) {
+                    // Sorting logic
+                    if(s === this.currentSort) {
+                      this.currentSortDir = this.currentSortDir==='asc'?'desc':'asc';
+                    }
+                    this.currentSort = s;
+                },
+                deleteFile: function(fileName) {
+                    // Delete file logic
+                    this.files = this.files.filter(file => file.name !== fileName);
+                }
+            },
+            computed: {
+                filteredFiles: function() {
+                    // Filtering logic
+                    let filtered = this.files.filter(file => {
+                        return file.name.toLowerCase().includes(this.filter.toLowerCase());
+                    });
+
+                    // Sorting logic
+                    return filtered.sort((a,b) => {
+                        let modifier = 1;
+                        if(this.currentSortDir === 'desc') modifier = -1;
+                        if(a[this.currentSort] < b[this.currentSort]) return -1 * modifier;
+                        if(a[this.currentSort] > b[this.currentSort]) return 1 * modifier;
+                        return 0;
+                    });
+                }
+            }
+        });
+    </script>
+    {% endraw %}
+</body>
+</html>

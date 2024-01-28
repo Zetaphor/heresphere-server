@@ -1,0 +1,5 @@
+netifaces
+loguru
+yt_dlp
+websockets
+python-dotenv
