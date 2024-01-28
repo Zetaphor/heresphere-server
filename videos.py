@@ -91,4 +91,4 @@ def download_direct(url):
   except Exception as e:
       logger.error(f"Error downloading direct video: {e}")
       return None
-  return f"/static/videos/direct/{filename_with_ext(filename)}"
+  return f"/static/videos/direct/{filename_with_ext(filename, False)}"
