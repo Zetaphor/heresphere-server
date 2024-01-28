@@ -44,7 +44,7 @@ curl --location 'localhost:5000/youtube' \
 --header 'Content-Type: application/json' \
 --data '{
     "url": "https://www.youtube.com/watch?v=zd7UqsWydaM",
-    "separate_streams": false
+    "separate_streams": false # Optional, defaults to true
 }'
 ```
 
