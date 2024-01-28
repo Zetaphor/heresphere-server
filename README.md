@@ -2,7 +2,7 @@
 
 A server to allow HereSphere to view YouTube videos. Also supports downloading any viewed videos from Youtube or direct links.
 
-Not officially endorsed or affiliated with HereSphere.
+Not officially endorsed by or affiliated with HereSphere.
 
 ## Setup
 
