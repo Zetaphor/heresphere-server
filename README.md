@@ -52,7 +52,7 @@ Response:
 
 ```json
 {
-    "videoUrl": "http://<detected ip>:5000/static/videos/youtube/zd7UqsWydaM___360_Shark_Megalodon_Bites_The_Ship_The_Largest_Shark_In_The_World_Vr_360_Video___3840x2160.webm",
+    "videoUrl": "http://<local ip>:5000/static/videos/youtube/zd7UqsWydaM___360_Shark_Megalodon_Bites_The_Ship_The_Largest_Shark_In_The_World_Vr_360_Video___3840x2160.webm",
     "success": true,
     "url": "/static/videos/youtube/zd7UqsWydaM___360_Shark_Megalodon_Bites_The_Ship_The_Largest_Shark_In_The_World_Vr_360_Video___3840x2160.webm"
 }
@@ -71,7 +71,7 @@ Response:
 
 ```json
 {
-    "videoUrl": "http://<detected ip>:5000/static/videos/direct/test_video___test_video.webm",
+    "videoUrl": "http://<local ip>:5000/static/videos/direct/test_video___test_video.webm",
     "success": true,
     "url": "/static/videos/direct/test_video___test_video.webm"
 }}
