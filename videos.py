@@ -10,7 +10,7 @@ root_path = os.path.dirname(os.path.abspath(__file__))
 
 def filename_with_ext(filename, youtube=True):
     path = os.path.join(root_path, 'static', 'videos', 'youtube')
-    if not youtube: path = os.path.join(root_path, 'videos', 'direct')
+    if not youtube: path = os.path.join(root_path, 'static', 'videos', 'direct')
 
     for file in os.listdir(path):
         basename, extension = os.path.splitext(file)
@@ -28,15 +28,19 @@ def download_progress(d):
 def get_video_info(url):
     with yt_dlp.YoutubeDL() as ydl:
         info_dict = ydl.extract_info(url, download=False)
-        vid = info_dict.get('id', uuid.uuid4().hex)
+        vid = info_dict.get('id', None)
         video_title = info_dict.get('title', vid)
         filename = re.sub(r'\W+', '_', video_title)
-        resolution = info_dict.get('resolution', 'Unknown')
-        return vid, video_title, filename, resolution
+        resolution = info_dict.get('resolution', None)
+        if (vid is not None):
+            filename = f"{vid}___{filename}"
+        if resolution is not None:
+            filename = f"{filename}___{resolution}"
+        return filename
 
 def download_yt(url):
-  vid, video_title, filename, resolution = get_video_info(url)
-  logger.debug(f"Downloading YouTube video {vid} `{video_title}` - {resolution}")
+  filename = get_video_info(url)
+  logger.debug(f"Downloading YouTube video {filename}")
 
   ydl_opts = {
       'format': '(bv+ba/b)[protocol^=http][protocol!=dash] / (bv*+ba/b)',
@@ -47,7 +51,7 @@ def download_yt(url):
   try:
       with yt_dlp.YoutubeDL(ydl_opts) as ydl:
           ydl.download([url])
-      logger.info(f"Downloaded YouTube video {vid} `{video_title}`")
+      logger.debug(f"Downloaded YouTube video {filename}")
   except Exception as e:
       logger.error(f"Error downloading YouTube video: {e}")
       return None
@@ -75,9 +79,9 @@ def get_yt_streams(url):
       return None, None
 
 def download_direct(url):
-  vid, video_title, filename, resolution = get_video_info(url)
+  filename = get_video_info(url)
 
-  logger.debug(f"Downloading YouTube video {vid} `{video_title}` - {resolution}")
+  logger.debug(f"Downloading direct video {filename}")
 
   ydl_opts = {
       'outtmpl': os.path.join('static', 'videos', 'direct', filename) + '.%(ext)s',
@@ -87,7 +91,7 @@ def download_direct(url):
   try:
       with yt_dlp.YoutubeDL(ydl_opts) as ydl:
           ydl.download([url])
-      logger.info(f"Downloaded YouTube video {vid} `{video_title}`")
+      logger.debug(f"Downloaded direct video {filename}")
   except Exception as e:
       logger.error(f"Error downloading direct video: {e}")
       return None

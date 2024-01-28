@@ -9,7 +9,7 @@ import threading
 import network
 from dotenv import load_dotenv
 from logger_config import get_logger
-from videos import download_yt, get_yt_streams
+from videos import download_yt, get_yt_streams, download_direct
 
 logger = get_logger()
 load_dotenv()
@@ -48,7 +48,7 @@ def download():
         logger.error("No direct video URL provided in the request")
         return jsonify({"success": False, "error": "No URL provided"}), 400
 
-    video_url = download_yt(url)
+    video_url = download_direct(url)
     if video_url is None:
         return jsonify({"success": False, "error": "Failed to download video"}), 500
     return jsonify({"success": True, "url": video_url, "full_url": f"http://{lan_ip}:{UI_PORT}{video_url}"})
