@@ -10,6 +10,7 @@ import network
 from dotenv import load_dotenv
 from logger_config import get_logger
 from videos import download_yt, get_yt_streams, download_direct
+import api
 
 logger = get_logger()
 load_dotenv()
@@ -38,6 +39,10 @@ connected_clients = set()
 @app.route('/')
 def home():
     return render_template('index.html')
+
+@app.route('/api/list')
+def get_files():
+    return jsonify(api.list_files())
 
 @app.route('/download', methods=['POST'])
 def download():
