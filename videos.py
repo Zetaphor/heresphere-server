@@ -12,7 +12,7 @@ def filename_with_ext(filename, youtube=True):
     if not youtube: path = os.path.join(root_path, 'static', 'videos', 'direct')
 
     for file in os.listdir(path):
-        basename, extension = os.path.splitext(file)
+        basename, _ = os.path.splitext(file)
         if basename == filename:
             return file
 

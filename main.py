@@ -1,7 +1,6 @@
 from flask import Flask, render_template, request, jsonify
-import asyncio
-import websockets
 import os
+import asyncio
 import logging
 import sys
 import datetime
@@ -11,6 +10,7 @@ from dotenv import load_dotenv
 from logger_config import get_logger
 from videos import download_yt, get_yt_streams, download_direct
 import api
+from ws_server import start_websocket_server_thread
 
 logger = get_logger()
 load_dotenv()
@@ -18,6 +18,7 @@ load_dotenv()
 DEBUG = bool(int(os.getenv('DEBUG')))
 UI_PORT = int(os.getenv('UI_PORT'))
 WS_PORT = int(os.getenv('WS_PORT'))
+
 
 log_level = 'DEBUG' if DEBUG else 'INFO'
 timestamp = datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
@@ -33,8 +34,6 @@ app.logger.setLevel(logging.WARNING)
 
 all_ips = network.get_all_ips()
 lan_ip = network.get_lan_ip()
-
-connected_clients = set()
 
 @app.route('/')
 def home():
@@ -79,37 +78,13 @@ def resolve_yt():
             return jsonify({"success": False, "error": "Failed to retrieve video and audio streams"}), 500
         return jsonify({"success": True, "videoUrl": video_url, "audioUrl": audio_url})
 
-async def broadcast(message):
-    for websocket in set(connected_clients):
-        try:
-            await websocket.send(message)
-        except Exception as e:
-            logger.error(f"Error sending message to WebSocket: {e}")
-
-async def websocket_server(websocket):
-    connected_clients.add(websocket)
-    try:
-      async for message in websocket:
-          print(f"Received message: {message}")
-          await websocket.send(f"Echo: {message}")
-    finally:
-      connected_clients.remove(websocket)
-
-def start_websocket_server():
-    asyncio.set_event_loop(asyncio.new_event_loop())
-    loop = asyncio.get_event_loop()
-
-    start_server = websockets.serve(websocket_server, '0.0.0.0', WS_PORT)
-    loop.run_until_complete(start_server)
-    loop.run_forever()
-
 def start_server():
     sys.stdout = open(os.devnull, 'w')
     sys.stderr = open(os.devnull, 'w')
     flask_thread = threading.Thread(target=lambda: app.run(debug=DEBUG, port=UI_PORT, use_reloader=False, host='0.0.0.0'))
     flask_thread.start()
 
-    ws_thread = threading.Thread(target=start_websocket_server)
+    ws_thread = threading.Thread(target=start_websocket_server_thread, args=(WS_PORT,))
     ws_thread.start()
 
     tab = "\t"
