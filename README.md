@@ -64,7 +64,7 @@ Response:
 curl --location 'localhost:5000/download' \
 --header 'Content-Type: application/json' \
 --data '{
-    "url": "https://f005.backblazeb2.com/file/zetaphor-vr-content/360_Shark_Megalodon_Bites_The_Ship_The_Largest_Shark_In_The_World_Vr_360_Video.webm"
+    "url": "https://f005.backblazeb2.com/file/zetaphor-vr-content/test_video.webm"
 }'
 ```
 
@@ -72,9 +72,9 @@ Response:
 
 ```json
 {
-    "full_url": "http://<detected ip>:5000/static/videos/direct/360_Shark_Megalodon_Bites_The_Ship_The_Largest_Shark_In_The_World_Vr_360_Video___360_Shark_Megalodon_Bites_The_Ship_The_Largest_Shark_In_The_World_Vr_360_Video.webm",
+    "full_url": "http://<detected ip>:5000/static/videos/direct/test_video___test_video.webm",
     "success": true,
-    "url": "/static/videos/direct/360_Shark_Megalodon_Bites_The_Ship_The_Largest_Shark_In_The_World_Vr_360_Video___360_Shark_Megalodon_Bites_The_Ship_The_Largest_Shark_In_The_World_Vr_360_Video.webm"
-}
+    "url": "/static/videos/direct/test_video___test_video.webm"
+}}
 ```
 
