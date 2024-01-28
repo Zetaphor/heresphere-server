@@ -12,7 +12,8 @@ def get_video_info(filename):
         with VideoFileClip(filename) as clip:
             resolution = f"{clip.size[0]}x{clip.size[1]}"
             fps = clip.fps
-        return (resolution, fps)
+            duration = clip.duration
+        return (resolution, fps, duration)
     except OSError as e:
         logger.error(f"Error getting video info: {e}")
         return clip_info
@@ -27,6 +28,12 @@ def get_file_size_formatted(filename):
     else:
         size_gb = size_mb / 1024
         return f"{size_gb:.2f} GB"
+
+def format_duration(duration):
+    hours = int(duration // 3600)
+    minutes = int((duration % 3600) // 60)
+    seconds = int(duration % 60)
+    return f"{hours:02d}:{minutes:02d}:{seconds:02d}"
 
 def get_creation_date(filename):
     if platform.system() == 'Windows':
@@ -51,7 +58,7 @@ def list_files():
 
     for root, dirs, files in os.walk('./static/videos'):
         for filename in files:
-            resolution, fps = get_video_info(os.path.join(root, filename))
+            resolution, fps, duration = get_video_info(os.path.join(root, filename))
             if filename.count('___') == 1:
                 id, title = parse_youtube_filename(filename)
                 extracted_details.append({
@@ -59,6 +66,7 @@ def list_files():
                     'title': title,
                     'fps': fps,
                     'resolution': resolution,
+                    'duration': format_duration(duration),
                     'filename': f"/static/videos/youtube/{filename}",
                     'created': get_creation_date(os.path.join(root, filename)),
                     'filesize': get_file_size_formatted(os.path.join(root, filename))
@@ -69,6 +77,7 @@ def list_files():
                     'title': os.path.splitext(filename)[0],
                     'fps': fps,
                     'resolution': resolution,
+                    'duration': format_duration(duration),
                     'filename': f"/static/videos/direct/{filename}",
                     'created': get_creation_date(os.path.join(root, filename)),
                     'filesize': get_file_size_formatted(os.path.join(root, filename))
