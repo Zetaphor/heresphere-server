@@ -1,5 +1,4 @@
 import os
-import uuid
 import re
 import yt_dlp
 from logger_config import get_logger
@@ -31,15 +30,11 @@ def get_video_info(url):
         vid = info_dict.get('id', None)
         video_title = info_dict.get('title', vid)
         filename = re.sub(r'\W+', '_', video_title)
-        resolution = info_dict.get('resolution', None)
-        if (vid is not None):
-            filename = f"{vid}___{filename}"
-        if resolution is not None:
-            filename = f"{filename}___{resolution}"
-        return filename
+        return vid, filename
 
 def download_yt(url):
-  filename = get_video_info(url)
+  vid, filename = get_video_info(url)
+  filename = f"{vid}___{filename}"
   logger.debug(f"Downloading YouTube video {filename}")
 
   ydl_opts = {
@@ -79,7 +74,7 @@ def get_yt_streams(url):
       return None, None
 
 def download_direct(url):
-  filename = get_video_info(url)
+  _, filename = get_video_info(url)
 
   logger.debug(f"Downloading direct video {filename}")
 
