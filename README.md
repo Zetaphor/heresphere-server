@@ -30,9 +30,9 @@ Response:
 
 ```json
 {
-    "full_url": "http://<detected ip>:5000/static/videos/youtube/360_Shark_Megalodon_Bites_The_Ship_The_Largest_Shark_In_The_World_Vr_360_Video.webm",
+    "full_url": "http://<detected ip>:5000/static/videos/youtube/zd7UqsWydaM___360_Shark_Megalodon_Bites_The_Ship_The_Largest_Shark_In_The_World_Vr_360_Video___3840x2160.webm",
     "success": true,
-    "url": "/static/videos/youtube/360_Shark_Megalodon_Bites_The_Ship_The_Largest_Shark_In_The_World_Vr_360_Video.webm"
+    "url": "/static/videos/youtube/zd7UqsWydaM___360_Shark_Megalodon_Bites_The_Ship_The_Largest_Shark_In_The_World_Vr_360_Video___3840x2160.webm"
 }
 ```
 
@@ -72,9 +72,9 @@ Response:
 
 ```json
 {
-    "full_url": "http://<detected ip>:5000/static/videos/youtube/360_Shark_Megalodon_Bites_The_Ship_The_Largest_Shark_In_The_World_Vr_360_Video.webm",
+    "full_url": "http://<detected ip>:5000/static/videos/direct/360_Shark_Megalodon_Bites_The_Ship_The_Largest_Shark_In_The_World_Vr_360_Video___360_Shark_Megalodon_Bites_The_Ship_The_Largest_Shark_In_The_World_Vr_360_Video.webm",
     "success": true,
-    "url": "/static/videos/youtube/360_Shark_Megalodon_Bites_The_Ship_The_Largest_Shark_In_The_World_Vr_360_Video.webm"
+    "url": "/static/videos/direct/360_Shark_Megalodon_Bites_The_Ship_The_Largest_Shark_In_The_World_Vr_360_Video___360_Shark_Megalodon_Bites_The_Ship_The_Largest_Shark_In_The_World_Vr_360_Video.webm"
 }
 ```
 
