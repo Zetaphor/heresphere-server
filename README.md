@@ -6,12 +6,14 @@ Not officially endorsed or affiliated with HereSphere.
 
 ## Setup
 
+This application was developed against Python 3.11.2.
+
 Install requirements:
 ```bash
 pip install -r requirements.txt
 ```
 
-Run the server:
+Run the server
 ```bash
 python server.py
 ```
