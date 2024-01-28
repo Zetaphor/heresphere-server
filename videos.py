@@ -12,8 +12,6 @@ def filename_with_ext(filename, youtube=True):
     path = os.path.join(root_path, 'static', 'videos', 'youtube')
     if not youtube: path = os.path.join(root_path, 'videos', 'direct')
 
-    logger.debug(f"Looking for {filename} in {path}")
-
     for file in os.listdir(path):
         basename, extension = os.path.splitext(file)
         if basename == filename:
@@ -30,7 +28,6 @@ def download_progress(d):
 def get_video_info(url):
     with yt_dlp.YoutubeDL() as ydl:
         info_dict = ydl.extract_info(url, download=False)
-        logger.debug(info_dict['resolution'])
         vid = info_dict.get('id', uuid.uuid4().hex)
         video_title = info_dict.get('title', vid)
         filename = re.sub(r'\W+', '_', video_title)
@@ -39,8 +36,6 @@ def get_video_info(url):
 
 def download_yt(url):
   vid, video_title, filename, resolution = get_video_info(url)
-  logger.debug(f"Video ID: {vid}, Video Title: {video_title}, Filename: {filename}, Resolution: {resolution}")
-
   logger.debug(f"Downloading YouTube video {vid} `{video_title}` - {resolution}")
 
   ydl_opts = {
@@ -81,7 +76,6 @@ def get_yt_streams(url):
 
 def download_direct(url):
   vid, video_title, filename, resolution = get_video_info(url)
-  logger.debug(f"Video ID: {vid}, Video Title: {video_title}, Filename: {filename}, Resolution: {resolution}")
 
   logger.debug(f"Downloading YouTube video {vid} `{video_title}` - {resolution}")
 
