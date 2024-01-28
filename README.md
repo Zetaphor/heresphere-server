@@ -16,13 +16,12 @@ Run the server:
 python server.py
 ```
 
-### Download Youtube video
+### Get YouTube stream URLs:
 ```bash
 curl --location 'localhost:5000/youtube' \
 --header 'Content-Type: application/json' \
 --data '{
     "url": "https://www.youtube.com/watch?v=zd7UqsWydaM",
-    "separate_streams": false # Optional, defaults to false
 }'
 ```
 
@@ -30,22 +29,22 @@ Response:
 
 ```json
 {
-    "full_url": "http://<detected ip>:5000/static/videos/youtube/zd7UqsWydaM___360_Shark_Megalodon_Bites_The_Ship_The_Largest_Shark_In_The_World_Vr_360_Video___3840x2160.webm",
+    "audioUrl": "https://manifest.googlevideo.com/api/manifest/hls_playlist/expire/1706424056/ei/mKK1Za7FG5D72_gPo7KSkAU/.../playlist/index.m3u8",
     "success": true,
-    "url": "/static/videos/youtube/zd7UqsWydaM___360_Shark_Megalodon_Bites_The_Ship_The_Largest_Shark_In_The_World_Vr_360_Video___3840x2160.webm"
+    "videoUrl": "https://manifest.googlevideo.com/api/manifest/hls_playlist/expire/1706424056/ei/mKK1Za7FG5D72_gPo7KSkAU/.../playlist/index.m3u8"
 }
 ```
 
-### Get YouTube stream URLs:
+### Download Youtube video
 
-Setting the `separate_streams` parameter to true will return two URLs: one for the audio stream and one for the video stream.
+Providing the optional `separate_streams` (defaults to true) parameter will download the video and provide a local URL instead of the Google hosted audio and video URLs.
 
 ```bash
 curl --location 'localhost:5000/youtube' \
 --header 'Content-Type: application/json' \
 --data '{
     "url": "https://www.youtube.com/watch?v=zd7UqsWydaM",
-    "separate_streams": true
+    "separate_streams": false
 }'
 ```
 
@@ -53,9 +52,9 @@ Response:
 
 ```json
 {
-    "audio_url": "https://manifest.googlevideo.com/api/manifest/hls_playlist/expire/1706424056/ei/mKK1Za7FG5D72_gPo7KSkAU/.../playlist/index.m3u8",
+    "videoUrl": "http://<detected ip>:5000/static/videos/youtube/zd7UqsWydaM___360_Shark_Megalodon_Bites_The_Ship_The_Largest_Shark_In_The_World_Vr_360_Video___3840x2160.webm",
     "success": true,
-    "video_url": "https://manifest.googlevideo.com/api/manifest/hls_playlist/expire/1706424056/ei/mKK1Za7FG5D72_gPo7KSkAU/.../playlist/index.m3u8"
+    "url": "/static/videos/youtube/zd7UqsWydaM___360_Shark_Megalodon_Bites_The_Ship_The_Largest_Shark_In_The_World_Vr_360_Video___3840x2160.webm"
 }
 ```
 
@@ -72,7 +71,7 @@ Response:
 
 ```json
 {
-    "full_url": "http://<detected ip>:5000/static/videos/direct/test_video___test_video.webm",
+    "videoUrl": "http://<detected ip>:5000/static/videos/direct/test_video___test_video.webm",
     "success": true,
     "url": "/static/videos/direct/test_video___test_video.webm"
 }}

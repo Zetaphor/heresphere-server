@@ -56,13 +56,13 @@ def download():
     video_url = download_direct(url)
     if video_url is None:
         return jsonify({"success": False, "error": "Failed to download video"}), 500
-    return jsonify({"success": True, "url": video_url, "full_url": f"http://{lan_ip}:{UI_PORT}{video_url}"})
+    return jsonify({"success": True, "url": video_url, "videoUrl": f"http://{lan_ip}:{UI_PORT}{video_url}"})
 
 @app.route('/youtube', methods=['POST'])
 def resolve_yt():
     data = request.get_json()
     url = data.get("url")
-    separate_streams = data.get("separate_streams", False)
+    separate_streams = data.get("separate_streams", True)
 
     if not url:
         logger.error("No YouTube URL provided in the request")
@@ -72,12 +72,12 @@ def resolve_yt():
         video_url = download_yt(url)
         if video_url is None:
             return jsonify({"success": False, "error": "Failed to download video"}), 500
-        return jsonify({"success": True, "url": video_url, "full_url": f"http://{lan_ip}:{UI_PORT}{video_url}"})
+        return jsonify({"success": True, "url": video_url, "videoUrl": f"http://{lan_ip}:{UI_PORT}{video_url}"})
     else:
         video_url, audio_url = get_yt_streams(url)
         if video_url is None or audio_url is None:
             return jsonify({"success": False, "error": "Failed to retrieve video and audio streams"}), 500
-        return jsonify({"success": True, "video_url": video_url, "audio_url": audio_url})
+        return jsonify({"success": True, "videoUrl": video_url, "audioUrl": audio_url})
 
 async def broadcast(message):
     for websocket in set(connected_clients):
