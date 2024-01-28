@@ -51,7 +51,7 @@ def download():
     video_url = download_yt(url)
     if video_url is None:
         return jsonify({"success": False, "error": "Failed to download video"}), 500
-    return jsonify({"success": True, "url": video_url, "full_url": f"http://{lan_ip}:{UI_PORT}/{video_url}"})
+    return jsonify({"success": True, "url": video_url, "full_url": f"http://{lan_ip}:{UI_PORT}{video_url}"})
 
 @app.route('/youtube', methods=['POST'])
 def resolve_yt():
@@ -67,7 +67,7 @@ def resolve_yt():
         video_url = download_yt(url)
         if video_url is None:
             return jsonify({"success": False, "error": "Failed to download video"}), 500
-        return jsonify({"success": True, "url": video_url, "full_url": f"http://{lan_ip}:{UI_PORT}/{video_url}"})
+        return jsonify({"success": True, "url": video_url, "full_url": f"http://{lan_ip}:{UI_PORT}{video_url}"})
     else:
         video_url, audio_url = get_yt_streams(url)
         if video_url is None or audio_url is None:
