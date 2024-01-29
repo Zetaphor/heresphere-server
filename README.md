@@ -6,7 +6,7 @@ Not officially endorsed by or affiliated with HereSphere.
 
 # Installation
 
-* Windows Users - Download the latest release from the releases page.
+* Windows Users - Download the latest release from [the releases page](https://github.com/Zetaphor/heresphere-server/releases).
 * Mac Users - Follow the instructions below to run the Python server.
 * Linux Users - Follow the instructions below to run the Python server.
 
