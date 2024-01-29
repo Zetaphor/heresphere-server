@@ -15,7 +15,7 @@ pip install -r requirements.txt
 
 Run the server
 ```bash
-python server.py
+python main.py
 ```
 
 ### Connection Test
