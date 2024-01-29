@@ -117,30 +117,12 @@ Response:
 }
 ```
 
-### Download Youtube video
+### Download video (Youtube or direct link)
 
-Providing the optional `separate_streams` (defaults to true) parameter will download the video and provide a local URL instead of the Google hosted audio and video URLs.
+Passing a `url` parameter will download the video and provide a local URL.
 
-```bash
-curl --location 'localhost:5000/youtube' \
---header 'Content-Type: application/json' \
---data '{
-    "url": "https://www.youtube.com/watch?v=zd7UqsWydaM",
-    "separate_streams": false # Optional, defaults to true
-}'
-```
+**Downloading a direct video link**
 
-Response:
-
-```json
-{
-    "videoUrl": "http://<local ip>:5000/static/videos/youtube/zd7UqsWydaM___360_Shark_Megalodon_Bites_The_Ship_The_Largest_Shark_In_The_World_Vr_360_Video___3840x2160.webm",
-    "success": true,
-    "url": "/static/videos/youtube/zd7UqsWydaM___360_Shark_Megalodon_Bites_The_Ship_The_Largest_Shark_In_The_World_Vr_360_Video___3840x2160.webm"
-}
-```
-
-### Download direct video
 ```bash
 curl --location 'localhost:5000/download' \
 --header 'Content-Type: application/json' \
@@ -159,3 +141,22 @@ Response:
 }}
 ```
 
+**Downloading a Youtube video**
+
+```bash
+curl --location 'localhost:5000/download' \
+--header 'Content-Type: application/json' \
+--data '{
+    "url": "https://www.youtube.com/watch?v=zd7UqsWydaM"
+}'
+```
+
+Response:
+
+```json
+{
+    "videoUrl": "http://<local ip>:5000/static/videos/youtube/zd7UqsWydaM___360_Shark_Megalodon_Bites_The_Ship_The_Largest_Shark_In_The_World_Vr_360_Video___3840x2160.webm",
+    "success": true,
+    "url": "/static/videos/youtube/zd7UqsWydaM___360_Shark_Megalodon_Bites_The_Ship_The_Largest_Shark_In_The_World_Vr_360_Video___3840x2160.webm"
+}
+```
