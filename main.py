@@ -65,22 +65,15 @@ def download():
 def resolve_yt():
     data = request.get_json()
     url = data.get("url")
-    separate_streams = data.get("separate_streams", True)
 
     if not url:
         logger.error("No YouTube URL provided in the request")
         return jsonify({"success": False, "error": "No URL provided"}), 400
 
-    if not separate_streams:
-        video_url = download_yt(url)
-        if video_url is None:
-            return jsonify({"success": False, "error": "Failed to download video"}), 500
-        return jsonify({"success": True, "url": video_url, "videoUrl": f"http://{lan_ip}:{UI_PORT}{video_url}"})
-    else:
-        video_url, audio_url = get_yt_streams(url)
-        if video_url is None or audio_url is None:
-            return jsonify({"success": False, "error": "Failed to retrieve video and audio streams"}), 500
-        return jsonify({"success": True, "videoUrl": video_url, "audioUrl": audio_url})
+    video_url, audio_url = get_yt_streams(url)
+    if video_url is None or audio_url is None:
+        return jsonify({"success": False, "error": "Failed to retrieve video and audio streams"}), 500
+    return jsonify({"success": True, "videoUrl": video_url, "audioUrl": audio_url})
 
 def start_server():
     sys.stdout = open(os.devnull, 'w')
