@@ -18,12 +18,6 @@ def filename_with_ext(filename, youtube=True):
 
     return None
 
-def download_progress(d):
-    if d['status'] == 'downloading':
-        logger.info(f"Downloading... {d['_percent_str']} complete at {d['_speed_str']}, ETA {d['_eta_str']}")
-    elif d['status'] == 'finished':
-        logger.info("Download completed", d['filename'])
-
 def get_video_info(url):
     with yt_dlp.YoutubeDL() as ydl:
         info_dict = ydl.extract_info(url, download=False)
@@ -32,7 +26,7 @@ def get_video_info(url):
         filename = re.sub(r'\W+', '_', video_title)
         return vid, filename
 
-def download_yt(url):
+def download_yt(url, progress_function):
   vid, filename = get_video_info(url)
   filename = f"{vid}___{filename}"
   logger.debug(f"Downloading YouTube video {filename}")
@@ -40,7 +34,7 @@ def download_yt(url):
   ydl_opts = {
       'format': '(bv+ba/b)[protocol^=http][protocol!=dash] / (bv*+ba/b)',
       'outtmpl': os.path.join('static', 'videos', 'youtube', filename) + '.%(ext)s',
-      'progress_hooks': [download_progress],
+      'progress_hooks': [progress_function],
   }
 
   try:
@@ -73,14 +67,14 @@ def get_yt_streams(url):
       logger.error(f"Error retrieving video and audio streams: {e}")
       return None, None
 
-def download_direct(url):
+def download_direct(url, progress_function):
   _, filename = get_video_info(url)
 
   logger.debug(f"Downloading direct video {filename}")
 
   ydl_opts = {
       'outtmpl': os.path.join('static', 'videos', 'direct', filename) + '.%(ext)s',
-      'progress_hooks': [download_progress],
+      'progress_hooks': [progress_function],
   }
 
   try:
