@@ -4,14 +4,78 @@ A server to allow HereSphere to view YouTube videos. Also supports downloading a
 
 Not officially endorsed by or affiliated with HereSphere.
 
+# Installation
+
+* Windows Users - Download the latest release from the releases page.
+* Mac Users - Follow the instructions below to run the Python server.
+* Linux Users - Follow the instructions below to run the Python server.
+
+# Running from source
+
+Either download the repository or clone it locally.
+
+
+```bash
+git clone https://github.com/zetaphor/here-sphere-server
+```
+
 ## Setup
 
 This application was developed against Python 3.11.2.
 
-Install requirements:
+### Virtual Environment Setup
+
+Before installing the dependencies, it's recommended to set up a virtual environment. This isolates your project dependencies from your global Python environment. There are several tools available for this:
+
+#### Using venv (built into Python)
+
+1. Create a virtual environment:
+
+```bash
+python3 -m venv .venv
+```
+
+2. Activate the virtual environment:
+
+```bash
+source .venv/bin/activate
+```
+
+#### Using pyenv (great for managing multiple Python versions)
+
+1. Install pyenv, see [pyenv installation instructions](https://github.com/pyenv/pyenv).
+2. Install Python 3.11.2 (if not already installed):
+
+```bash
+pyenv install 3.11.2
+```
+3. Create a new virtual environment with Python 3.11.2:
+
+```bash
+pyenv virtualenv 3.11.2 .venv
+```
+
+4. Activate the virtual environment:
+
+```bash
+source .venv/bin/activate
+```
+
+### Dependencies
+
+Once your virtual environment is active, install the project dependencies:
 ```bash
 pip install -r requirements.txt
 ```
+
+Remember to deactivate your virtual environment when you're done:
+
+Using venv or pyenv:
+```bash
+deactivate
+```
+
+## Running
 
 Run the server
 ```bash
