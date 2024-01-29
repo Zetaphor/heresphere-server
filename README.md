@@ -16,7 +16,7 @@ Either download the repository or clone it locally.
 
 
 ```bash
-git clone https://github.com/zetaphor/here-sphere-server
+git clone https://github.com/zetaphor/heresphere-server
 ```
 
 ## Setup
