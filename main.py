@@ -1,6 +1,5 @@
 from flask import Flask, render_template, request, jsonify
 import os
-import asyncio
 import logging
 import sys
 import datetime
@@ -8,7 +7,7 @@ import threading
 import network
 from dotenv import load_dotenv
 from logger_config import get_logger
-from videos import download_yt, get_yt_streams, download_direct
+from videos import download_yt, get_yt_streams, download_direct, is_youtube_url
 import api
 from ws_server import start_websocket_server_thread
 
@@ -35,6 +34,12 @@ app.logger.setLevel(logging.WARNING)
 all_ips = network.get_all_ips()
 lan_ip = network.get_lan_ip()
 
+def download_progress(d):
+    if d['status'] == 'downloading':
+        logger.info(f"Downloading... {d['_percent_str']} complete at {d['_speed_str']}, ETA {d['_eta_str']}")
+    elif d['status'] == 'finished':
+        logger.info("Download completed", d['filename'])
+
 @app.route('/')
 def home():
     return render_template('index.html')
@@ -56,7 +61,13 @@ def download():
         logger.error("No direct video URL provided in the request")
         return jsonify({"success": False, "error": "No URL provided"}), 400
 
-    video_url = download_direct(url)
+    video_url = None
+
+    if is_youtube_url(url):
+        video_url = download_yt(url, download_progress)
+    else:
+        video_url = download_direct(url, download_progress)
+
     if video_url is None:
         return jsonify({"success": False, "error": "Failed to download video"}), 500
     return jsonify({"success": True, "url": video_url, "videoUrl": f"http://{lan_ip}:{UI_PORT}{video_url}"})

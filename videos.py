@@ -18,6 +18,11 @@ def filename_with_ext(filename, youtube=True):
 
     return None
 
+def is_youtube_url(url):
+    """Check if the provided URL is a valid YouTube URL."""
+    pattern = r'^(https?:\/\/)?(www\.)?(youtube\.com|youtu\.?be)\/.+$'
+    return bool(re.match(pattern, url))
+
 def get_video_info(url):
     with yt_dlp.YoutubeDL() as ydl:
         info_dict = ydl.extract_info(url, download=False)
