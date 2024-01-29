@@ -39,6 +39,10 @@ lan_ip = network.get_lan_ip()
 def home():
     return render_template('index.html')
 
+@app.route('/connection_test')
+def connection_test():
+    return jsonify({"success": True})
+
 @app.route('/api/list')
 def get_files():
     return jsonify(api.list_files())

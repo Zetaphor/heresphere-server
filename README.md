@@ -18,6 +18,22 @@ Run the server
 python server.py
 ```
 
+### Connection Test
+
+Used to verify that the HereSphere client can reach the server
+
+```bash
+curl --location 'localhost:5000/connection_test'
+```
+
+Response:
+
+```json
+{
+    "success": true
+}
+```
+
 ### Get YouTube stream URLs:
 ```bash
 curl --location 'localhost:5000/youtube' \
