@@ -2,14 +2,37 @@ import os
 import re
 import yt_dlp
 from logger_config import get_logger
+from dotenv import load_dotenv
 
 logger = get_logger()
-
+load_dotenv()
 root_path = os.path.dirname(os.path.abspath(__file__))
+
+is_windows = os.name == 'nt' # Anguish
+
+def get_static_directory():
+    base_dir = os.path.abspath(os.path.dirname(__file__))
+    if os.name == 'nt' and '_internal' in base_dir:
+        # Fix path for Windows Pyinstaller directory
+        base_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
+    # Construct the path to the 'static' folder
+    static_folder_path = os.path.join(base_dir, 'static')
+    return static_folder_path
+
+# Set the path to the static ffmpeg executable for Windows
+if is_windows:
+    ffmpeg_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), os.getenv('FFMPEG_PATH'), 'ffmpeg.exe')
+else:
+    ffmpeg_path = None
 
 def filename_with_ext(filename, youtube=True):
     path = os.path.join(root_path, 'static', 'videos', 'youtube')
     if not youtube: path = os.path.join(root_path, 'static', 'videos', 'direct')
+
+    # Fix path for Windows Pyinstaller directory
+    if is_windows and '_internal' in root_path:
+        path = os.path.join(os.path.dirname(root_path), 'static', 'videos', 'youtube')
+        if not youtube: os.path.join(os.path.dirname(root_path), 'static', 'videos', 'direct')
 
     for file in os.listdir(path):
         basename, _ = os.path.splitext(file)
@@ -42,6 +65,10 @@ def download_yt(url, progress_function):
       'progress_hooks': [progress_function],
   }
 
+  if is_windows:
+      logger.debug(f"Windows detected, using ffmpeg binary from {ffmpeg_path}")
+      ydl_opts['ffmpeg_location'] = ffmpeg_path    
+
   try:
       with yt_dlp.YoutubeDL(ydl_opts) as ydl:
           ydl.download([url])
@@ -58,6 +85,10 @@ def get_yt_streams(url):
         'simulate': True,  # Do not download the video
         'geturl': True, # Output only the urls
     }
+
+    if is_windows:
+        logger.debug(f"Windows detected, using ffmpeg binary from {ffmpeg_path}")
+        ydl_opts['ffmpeg_location'] = ffmpeg_path    
 
     try:
       with yt_dlp.YoutubeDL(ydl_opts) as ydl:
@@ -84,6 +115,10 @@ def download_direct(url, progress_function):
       'outtmpl': os.path.join('static', 'videos', 'direct', filename) + '.%(ext)s',
       'progress_hooks': [progress_function],
   }
+
+  if is_windows:
+      logger.debug(f"Windows detected, using ffmpeg binary from {ffmpeg_path}")
+      ydl_opts['ffmpeg_location'] = ffmpeg_path
 
   try:
       with yt_dlp.YoutubeDL(ydl_opts) as ydl:

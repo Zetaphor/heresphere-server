@@ -7,7 +7,7 @@ import threading
 import network
 from dotenv import load_dotenv
 from logger_config import get_logger
-from videos import download_yt, get_yt_streams, download_direct, is_youtube_url
+from videos import download_yt, get_yt_streams, download_direct, is_youtube_url, get_static_directory
 import api
 from ws_server import start_websocket_server_thread
 
@@ -28,7 +28,9 @@ logger.add(log_file_path, rotation="1 week", level=log_level)
 cli = sys.modules['flask.cli']
 cli.show_server_banner = lambda *x: None
 
-app = Flask(__name__)
+static_folder_path = get_static_directory()
+
+app = Flask(__name__, static_folder=static_folder_path)
 app.logger.setLevel(logging.WARNING)
 
 all_ips = network.get_all_ips()
@@ -89,6 +91,7 @@ def resolve_yt():
 def start_server():
     sys.stdout = open(os.devnull, 'w')
     sys.stderr = open(os.devnull, 'w')
+
     flask_thread = threading.Thread(target=lambda: app.run(debug=DEBUG, port=UI_PORT, use_reloader=False, host='0.0.0.0'))
     flask_thread.start()
 
