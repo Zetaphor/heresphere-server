@@ -54,15 +54,18 @@ def download_yt(url, progress_function):
 def get_yt_streams(url):
     ydl_opts = {
         'format': '(bv+ba/b)[protocol^=http][protocol!=dash] / (bv*+ba/b)',
-        'quiet': True
+        'quiet': True,  # Suppresses most of the console output
+        'simulate': True,  # Do not download the video
+        'geturl': True, # Output only the urls
     }
 
     try:
       with yt_dlp.YoutubeDL(ydl_opts) as ydl:
         info = ydl.extract_info(url, download=False)
-        formats = info.get('formats', [info])
-        video_url = next((f['url'] for f in formats if f.get('vcodec') != 'none'), None)
-        audio_url = next((f['url'] for f in formats if f.get('acodec') != 'none'), None)
+        video_url = audio_url = None
+        if 'requested_formats' in info:
+            video_url = info['requested_formats'][0]['url']
+            audio_url = info['requested_formats'][1]['url']
 
         if not video_url or not audio_url:
             raise Exception("Could not retrieve both video and audio URLs")
