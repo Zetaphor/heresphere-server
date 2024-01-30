@@ -82,6 +82,24 @@ Run the server
 python main.py
 ```
 
+## Building Windows binary
+
+The Windows distributable is built with Pyinstaller.
+
+1. Install Pyinstaller:
+
+```bash
+pip install pyinstaller
+```
+
+2. Run Pyinstaller, making sure to keep the .env file separated:
+
+```bash
+ pyinstaller  --add-data=".env;." .\main.py
+ ```
+
+3. Copy the [ffmpeg binaries](https://github.com/yt-dlp/FFmpeg-Builds#ffmpeg-static-auto-builds) to `C:\Users\zetap\Code\heresphere-server\dist\main\_internal\ffmpeg_x64`. 
+
 ### Connection Test
 
 Used to verify that the HereSphere client can reach the server
