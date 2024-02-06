@@ -6,7 +6,7 @@ import datetime
 import threading
 import network
 from logger_config import get_logger
-from videos import download_yt, get_yt_streams, download_direct, is_youtube_url, get_static_directory
+from videos import download_yt, get_stream, download_direct, is_youtube_url, get_static_directory
 import api
 from ws_server import start_websocket_server_thread
 
@@ -15,7 +15,6 @@ logger = get_logger()
 DEBUG = 1
 UI_PORT = 5000
 WS_PORT = 6789
-
 
 log_level = 'DEBUG' if DEBUG else 'INFO'
 timestamp = datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
@@ -74,17 +73,17 @@ def download():
         return jsonify({"success": False, "error": "Failed to download video"}), 500
     return jsonify({"success": True, "url": video_url, "videoUrl": f"http://{lan_ip}:{UI_PORT}{video_url}"})
 
-@app.route('/youtube', methods=['POST'])
+@app.route('/stream', methods=['POST'])
 def resolve_yt():
     data = request.get_json()
     url = data.get("url")
 
     if not url:
-        logger.error("No YouTube URL provided in the request")
+        logger.error("No URL provided in the request")
         return jsonify({"success": False, "error": "No URL provided"}), 400
 
-    video_url, audio_url = get_yt_streams(url)
-    if video_url is None or audio_url is None:
+    video_url, audio_url = get_stream(url)
+    if video_url is None and audio_url is None:
         return jsonify({"success": False, "error": "Failed to retrieve video and audio streams"}), 500
     return jsonify({"success": True, "videoUrl": video_url, "audioUrl": audio_url})
 

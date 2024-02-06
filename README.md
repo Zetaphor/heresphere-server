@@ -1,6 +1,6 @@
 # HereSphere Server
 
-A server to allow HereSphere to view YouTube videos. Also supports downloading any viewed videos from Youtube or direct links.
+A server to allow HereSphere to view YouTube videos and [any other site supported by yt-dlp](https://github.com/yt-dlp/yt-dlp/blob/master/supportedsites.md). Also supports downloading any viewed videos yt-dlp supported links or direct video file links.
 
 Not officially endorsed by or affiliated with HereSphere.
 
@@ -95,10 +95,10 @@ pip install pyinstaller
 2. Run Pyinstaller, making sure to keep the .env file separated:
 
 ```bash
- pyinstaller  --add-data=".env;." .\main.py
+ pyinstaller .\main.py
  ```
 
-3. Copy the [ffmpeg binaries](https://github.com/yt-dlp/FFmpeg-Builds#ffmpeg-static-auto-builds) to `C:\Users\zetap\Code\heresphere-server\dist\main\_internal\ffmpeg_x64`. 
+3. Copy the [ffmpeg binaries](https://github.com/yt-dlp/FFmpeg-Builds#ffmpeg-static-auto-builds) to `C:\Users\zetap\Code\heresphere-server\dist\main\_internal\ffmpeg_x64`.
 
 ### Connection Test
 
@@ -116,9 +116,14 @@ Response:
 }
 ```
 
-### Get YouTube stream URLs:
+### Get stream URL:
+
+**Youtube Streams**
+
+Youtube videos will return both a `videoUrl` and an `audioUrl`
+
 ```bash
-curl --location 'localhost:5000/youtube' \
+curl --location 'localhost:5000/stream' \
 --header 'Content-Type: application/json' \
 --data '{
     "url": "https://www.youtube.com/watch?v=zd7UqsWydaM",
@@ -127,17 +132,33 @@ curl --location 'localhost:5000/youtube' \
 
 Response:
 
+**Other Sites**
+
+Any site that is in the [yt-dlp supported sites list](https://github.com/yt-dlp/yt-dlp/blob/master/supportedsites.md) will be accepted.
+
+Most other sites will only return a `videoUrl``
+
+```bash
+curl --location 'localhost:5000/stream' \
+--header 'Content-Type: application/json' \
+--data '{
+    "url": "https://www.adultswim.com/videos/dr-stone/last-man-standing"
+}'
+````
+
 ```json
 {
-    "audioUrl": "https://manifest.googlevideo.com/api/manifest/hls_playlist/expire/1706424056/ei/mKK1Za7FG5D72_gPo7KSkAU/.../playlist/index.m3u8",
+    "audioUrl": null,
     "success": true,
-    "videoUrl": "https://manifest.googlevideo.com/api/manifest/hls_playlist/expire/1706424056/ei/mKK1Za7FG5D72_gPo7KSkAU/.../playlist/index.m3u8"
+    "videoUrl": "https://tve-vod-aka.warnermediacdn.com/adultswim/3cbf4094adea04217dd1750ab1101604/layer7/layer7_bk.m3u8?hdntl=exp=1707221031~acl=%2fadultswim%2f3cbf4094adea04217dd1750ab1101604%2f*~hmac=0cd211dfc01f28416fc97b50aec0f79aff4e8c4890a295ba0ed22799a429be3b"
 }
 ```
 
-### Download video (Youtube or direct link)
+### Download video
 
 Passing a `url` parameter will download the video and provide a local URL.
+
+If the URL is not a direct link to a video file, it must be a site that is in the [yt-dlp supported sites list](https://github.com/yt-dlp/yt-dlp/blob/master/supportedsites.md).
 
 **Downloading a direct video link**
 

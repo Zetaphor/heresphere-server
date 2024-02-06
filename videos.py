@@ -77,7 +77,7 @@ def download_yt(url, progress_function):
 
   if is_windows:
       logger.debug(f"Windows detected, using ffmpeg binary from {ffmpeg_path}")
-      ydl_opts['ffmpeg_location'] = ffmpeg_path    
+      ydl_opts['ffmpeg_location'] = ffmpeg_path
 
   try:
       with yt_dlp.YoutubeDL(ydl_opts) as ydl:
@@ -88,7 +88,7 @@ def download_yt(url, progress_function):
       return None
   return f"/static/videos/youtube/{filename_with_ext(filename)}"
 
-def get_yt_streams(url):
+def get_stream(url):
     ydl_opts = {
         'format': '(bv+ba/b)[protocol^=http][protocol!=dash] / (bv*+ba/b)',
         'quiet': True,  # Suppresses most of the console output
@@ -98,18 +98,26 @@ def get_yt_streams(url):
 
     if is_windows:
         logger.debug(f"Windows detected, using ffmpeg binary from {ffmpeg_path}")
-        ydl_opts['ffmpeg_location'] = ffmpeg_path    
+        ydl_opts['ffmpeg_location'] = ffmpeg_path
 
     try:
       with yt_dlp.YoutubeDL(ydl_opts) as ydl:
         info = ydl.extract_info(url, download=False)
         video_url = audio_url = None
-        if 'requested_formats' in info:
-            video_url = info['requested_formats'][0]['url']
-            audio_url = info['requested_formats'][1]['url']
 
-        if not video_url or not audio_url:
-            raise Exception("Could not retrieve both video and audio URLs")
+        if is_youtube_url(url):
+            if 'requested_formats' in info:
+                video_url = info['requested_formats'][0]['url']
+                audio_url = info['requested_formats'][1]['url']
+            if not video_url and not audio_url:
+                raise Exception("Could not retrieve both video and audio URLs")
+
+        else:
+            if 'url' not in info:
+                raise Exception("Could not retrieve video URL")
+
+            video_url = info['url']
+            audio_url = None
 
         return video_url, audio_url
     except Exception as e:
