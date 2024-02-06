@@ -177,7 +177,7 @@ Response:
     "videoUrl": "http://<local ip>:5000/static/videos/direct/test_video___test_video.webm",
     "success": true,
     "url": "/static/videos/direct/test_video___test_video.webm"
-}}
+}
 ```
 
 **Downloading a Youtube video**
