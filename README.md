@@ -79,7 +79,7 @@ deactivate
 
 Run the server
 ```bash
-python main.py
+python3 main.py
 ```
 
 ## Building Windows binary

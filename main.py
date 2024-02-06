@@ -5,18 +5,16 @@ import sys
 import datetime
 import threading
 import network
-from dotenv import load_dotenv
 from logger_config import get_logger
 from videos import download_yt, get_yt_streams, download_direct, is_youtube_url, get_static_directory
 import api
 from ws_server import start_websocket_server_thread
 
 logger = get_logger()
-load_dotenv()
 
-DEBUG = bool(int(os.getenv('DEBUG')))
-UI_PORT = int(os.getenv('UI_PORT'))
-WS_PORT = int(os.getenv('WS_PORT'))
+DEBUG = 1
+UI_PORT = 5000
+WS_PORT = 6789
 
 
 log_level = 'DEBUG' if DEBUG else 'INFO'
@@ -29,6 +27,8 @@ cli = sys.modules['flask.cli']
 cli.show_server_banner = lambda *x: None
 
 static_folder_path = get_static_directory()
+
+logger.debug(f"Static Folder Path: {static_folder_path}")
 
 app = Flask(__name__, static_folder=static_folder_path)
 app.logger.setLevel(logging.WARNING)

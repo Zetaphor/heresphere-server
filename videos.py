@@ -1,27 +1,37 @@
 import os
+import sys
 import re
 import yt_dlp
 from logger_config import get_logger
-from dotenv import load_dotenv
 
 logger = get_logger()
-load_dotenv()
 root_path = os.path.dirname(os.path.abspath(__file__))
 
 is_windows = os.name == 'nt' # Anguish
 
+def get_application_path():
+    application_path = os.path.dirname(os.path.abspath(__file__))
+    if getattr(sys, 'frozen', False):
+        application_path = os.path.dirname(sys.executable)
+        logger.debug('Running mode: Frozen/executable')
+    else:
+        try:
+            app_full_path = os.path.realpath(__file__)
+            application_path = os.path.dirname(app_full_path)
+            logger.debug("Running mode: Non-interactive")
+        except NameError:
+            application_path = os.getcwd()
+            logger.debug("Running mode: Interactive")
+    return application_path
+
 def get_static_directory():
-    base_dir = os.path.abspath(os.path.dirname(__file__))
-    if os.name == 'nt' and '_internal' in base_dir:
-        # Fix path for Windows Pyinstaller directory
-        base_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
-    # Construct the path to the 'static' folder
-    static_folder_path = os.path.join(base_dir, 'static')
-    return static_folder_path
+    application_path = get_application_path()
+    logger.debug(application_path)
+    return os.path.join(application_path, 'static')
 
 # Set the path to the static ffmpeg executable for Windows
 if is_windows:
-    ffmpeg_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), os.getenv('FFMPEG_PATH'), 'ffmpeg.exe')
+    ffmpeg_path = os.path.join(get_application_path(), 'ffmpeg_x64', 'ffmpeg.exe')
 else:
     ffmpeg_path = None
 

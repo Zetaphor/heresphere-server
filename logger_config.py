@@ -1,11 +1,8 @@
 from loguru import logger
 import datetime
 import os
-from dotenv import load_dotenv
 
-load_dotenv()
-
-DEBUG = bool(int(os.getenv('DEBUG')))
+DEBUG = 1
 log_level = 'DEBUG' if DEBUG else 'INFO'
 
 # Generate a timestamp for the log file name
