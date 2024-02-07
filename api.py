@@ -3,6 +3,7 @@ import time
 import platform
 from logger_config import get_logger
 from moviepy.editor import VideoFileClip
+from videos import get_static_directory
 
 logger = get_logger()
 
@@ -56,7 +57,7 @@ def parse_youtube_filename(filename):
 def list_files():
     extracted_details = []
 
-    for root, dirs, files in os.walk('./static/videos'):
+    for root, _, files in os.walk(os.path.join(get_static_directory(), 'videos')):
         for filename in files:
             resolution, fps, duration = get_video_info(os.path.join(root, filename))
             if filename.count('___') == 1:

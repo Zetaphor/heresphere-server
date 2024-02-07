@@ -20,7 +20,8 @@
             <div v-for="file in filteredFiles" :key="file.filename" class="p-4 border-b border-gray-200">
                 <div class="text-lg font-bold"><a class="text-blue-900" :href="file.filename">{{ file.title }}</a></div>
                 <div class="text-sm text-gray-600">
-                    <p v-if="file.yt_id" class="text-blue-500"><a :href="'https://youtube.com/watch?v=' + file.yt_id">YouTube Link</a></p>
+                    <p v-if="file.yt_id" class="text-blue-500"><a
+                            :href="'https://youtube.com/watch?v=' + file.yt_id">YouTube Link</a></p>
                     <p>Resolution: {{ file.resolution }}@{{ file.fps }}fps</p>
                     <p>Duration: {{ file.duration }}</p>
                     <p>Size: {{ file.filesize }}</p>
@@ -47,7 +48,7 @@
                 this.files = this.files.filter(file => file.filename !== fileName);
             },
             fetchFiles: function () {
-                axios.get('http://localhost:5000/api/list')
+                axios.get('/api/list')
                     .then(response => {
                         this.files = response.data;
                     })
