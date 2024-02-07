@@ -12,7 +12,7 @@ Not officially endorsed by or affiliated with HereSphere.
 
 # User Guide
 
-## Setting the Link Server address
+## Step 1 - Setting the Link Server address
 
 Start the server. Load the HereSphere web browser and click the cog wheel to open the settings. In the `Link Server` field, enter the URL you were given from the server window.
 
@@ -26,17 +26,17 @@ Typically the wireless or ethernet adapter will be listed first and will be the 
 
 _Example LAN IP:_ `http://192.168.x.x:5000`
 
-## Verifying Connectivity
+## Step 2 - Verifying Connectivity
 
 If you visit the link server URL in your browser, you should see an interface that lists all of the videos you have downloaded to the server directory. This list contains direct links and a filter option for easy browsing.
 
 This will later be improved to integrate the HereSphere API as well as a proper queueing system for downloads.
 
-## Streaming & Downloading
+## Step 3 - Streaming & Downloading
 
 There are two options available with the server, you must set the link server address to reflect which option you want to use.
 
-The options are http://<Link Server Address>:5000/stream and http://<Link Server Address>:5000/download.
+The options are `http://<Link Server Address>:5000/stream` and `http://<Link Server Address>:5000/download`.
 
 Internally the tool uses yt-dlp, so [any site that is supported by yt-dlp](https://github.com/yt-dlp/yt-dlp/blob/master/supportedsites.md) will work for streaming and downloading.
 
