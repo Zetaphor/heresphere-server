@@ -7,8 +7,54 @@ Not officially endorsed by or affiliated with HereSphere.
 # Installation
 
 * Windows Users - Download the latest release from [the releases page](https://github.com/Zetaphor/heresphere-server/releases).
-* Mac Users - Follow the instructions below to run the Python server.
-* Linux Users - Follow the instructions below to run the Python server.
+* Mac Users - Follow the instructions below on running the Python server from source.
+* Linux Users - Follow the instructions below on running the Python server from source.
+
+# User Guide
+
+## Setting the Link Server address
+
+Start the server. Load the HereSphere web browser and click the cog wheel to open the settings. In the `Link Server` field, enter the URL you were given from the server window.
+
+For Steam users, this will be the localhost URL, `http://localhost:5000`.
+
+For Quest users, this will be the LAN IP of your device. The server will attempt to find the LAN IP of your device and present you with a URL.
+
+It will also list every network adapter found on the device and provide a URL for each one.
+
+Typically the wireless or ethernet adapter will be listed first and will be the correct choice.
+
+_Example LAN IP:_ `http://192.168.x.x:5000`
+
+## Verifying Connectivity
+
+If you visit the link server URL in your browser, you should see an interface that lists all of the videos you have downloaded to the server directory. This list contains direct links and a filter option for easy browsing.
+
+This will later be improved to integrate the HereSphere API as well as a proper queueing system for downloads.
+
+## Streaming & Downloading
+
+There are two options available with the server, you must set the link server address to reflect which option you want to use.
+
+The options are http://<Link Server Address>:5000/stream and http://<Link Server Address>:5000/download.
+
+Internally the tool uses yt-dlp, so [any site that is supported by yt-dlp](https://github.com/yt-dlp/yt-dlp/blob/master/supportedsites.md) will work for streaming and downloading.
+
+### Streaming
+
+Set the link server address to `http://<Link Server Address>:5000/stream`.
+
+If the link server is set to download, the server will first download the video to your local machine, and once complete return a stream URL to HereSphere.
+
+Depending on the size of the video, this may take a few seconds or minutes. You can monitor the download progress in the server console.
+
+You can find a link to your downloaded video from the server interface page at `http://<Link Server Address>:5000`.
+
+### Downloading
+
+Set the link server address to `http://<Link Server Address>:5000/download`.
+
+You can find a link to your downloaded video from the server interface page at `http://<Link Server Address>:5000`.
 
 # Running from source
 
